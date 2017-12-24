@@ -1,0 +1,5 @@
+subsetData <- read.csv("subsetData.csv",stringsAsFactors = FALSE)
+str(subsetData)
+hist(as.numeric(mydata1$Global_active_power),breaks=11,col="red",main="Global Active Power", xlab="Global Active Power(kilowatts")
+dev.copy(png,"plot1.png")
+dev.off()
