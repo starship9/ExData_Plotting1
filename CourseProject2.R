@@ -51,11 +51,33 @@ axis(1,at = 1:length(xnames),labels = xnames)
 #plot5 begins
 baltimoreDF <- SCC[grep("Motor",SCC$Short.Name),]
 baltimoreIntersect <- intersect(baltimoreDF$SCC,baltimore$SCC)
-length(baltimoreIntersect)
-baltimoreAggDF <- subset(baltimoreDF,SCC == baltimoreIntersect)
-names(tapply(baltimoreAggDF$Emissions,baltimoreAggDF$year,sum))
-xnames <- names(tapply(baltimoreAggDF$Emissions,baltimoreAggDF$year,sum))
-plot(tapply(baltimoreAggDF$Emissions,baltimoreAggDF$year,sum),xaxt = "n",main = "Total Pollution per Year from Motor vehicles in Baltimore City",xlab = "Year", ylab = "Pollution",pch = 19)
+
+mergeBalti <- merge(baltimore,baltimoreDF,by = "SCC")
+dim(mergeBalti)
+head(mergeBalti)
+names(mergeBalti)
+names(tapply(mergeBalti$Emissions,mergeBalti$year,sum))
+xnames <- names(tapply(mergeBalti$Emissions,mergeBalti$year,sum))
+plot(tapply(mergeBalti$Emissions,mergeBalti$year,sum),xaxt = "n",main = "Total Pollution per Year from Motor vehicles in Baltimore City",xlab = "Year", ylab = "Pollution",pch = 19)
 axis(1,at = 1:length(xnames),labels = xnames)
 
 #plot5 ends
+
+#plot6 begins
+LA <- subset(NEI,fips == "06037")
+LADF <- SCC[grep("Motor",SCC$Short.Name),]
+mergeLA <- merge(LA,LADF,by = "SCC")
+dim(mergeLA)
+names(mergeLA)
+names(tapply(mergeLA$Emissions,mergeLA$year,sum))
+xLAnames <- names(tapply(mergeLA$Emissions,mergeLA$year,sum))
+
+par(mfrow = c(2,1),mar = c(4,4,2,1))
+plot(tapply(mergeLA$Emissions,mergeLA$year,sum),xaxt = "n",main = "Total Pollution per Year from Motor vehicles in LA",xlab = "Year", ylab = "Pollution",pch = 19)
+axis(1,at = 1:length(xLAnames),labels = xLAnames)
+
+xBaltinames <- names(tapply(mergeBalti$Emissions,mergeBalti$year,sum))
+plot(tapply(mergeBalti$Emissions,mergeBalti$year,sum),xaxt = "n",main = "Total Pollution per Year from Motor vehicles in Baltimore City",xlab = "Year", ylab = "Pollution",pch = 19)
+axis(1,at = 1:length(xBaltinames),labels = xBaltinames)
+
+#plot6 ends
